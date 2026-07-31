@@ -16,6 +16,7 @@ if (!isValidCsrfToken($_POST['csrf_token'] ?? null)) {
 try {
     writeAuthSettings([
         'allow_self_registration' => ($_POST['allow_self_registration'] ?? null) === '1',
+        'require_admin_approval' => ($_POST['require_admin_approval'] ?? null) === '1',
     ]);
 } catch (RuntimeException $runtimeException) {
     setFlash('error', $runtimeException->getMessage());
