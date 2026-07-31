@@ -146,6 +146,20 @@ function requireApiAuth()
     ], 401);
 }
 
+function requireApiAdmin()
+{
+    requireApiAuth();
+
+    if (currentUserIsAdmin()) {
+        return;
+    }
+
+    respondJson([
+        'success' => false,
+        'error' => 'Nur Administratoren duerfen diese Aktion ausfuehren.',
+    ], 403);
+}
+
 function requireTextAuth()
 {
     if (currentUser() !== null) {
