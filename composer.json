@@ -1,0 +1,12 @@
+{
+    "name": "sanders/auth-core",
+    "description": "Gemeinsame Benutzerverwaltungs-Logik (Session, Login, Passwort-Reset, Mailversand) fuer unabhaengige PHP/Docker-Webanwendungen.",
+    "type": "library",
+    "require": {
+        "php": ">=8.0",
+        "phpmailer/phpmailer": "^6.9"
+    },
+    "config": {
+        "vendor-dir": "vendor"
+    }
+}
