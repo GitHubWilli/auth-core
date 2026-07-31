@@ -14,6 +14,7 @@ if (!isValidCsrfToken($_POST['csrf_token'] ?? null)) {
 }
 
 $username = trim((string) ($_POST['username'] ?? ''));
+$email = trim((string) ($_POST['email'] ?? ''));
 $password = (string) ($_POST['password'] ?? '');
 $passwordConfirm = (string) ($_POST['password_confirm'] ?? '');
 $isAdmin = ($_POST['is_admin'] ?? null) === '1';
@@ -21,6 +22,11 @@ $isAdmin = ($_POST['is_admin'] ?? null) === '1';
 $usernameError = validateUsername($username);
 if ($usernameError !== null) {
     setFlash('error', $usernameError);
+    redirectTo(authRoute('users') . '?action=create');
+}
+
+if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    setFlash('error', 'Bitte eine gültige E-Mail-Adresse eingeben.');
     redirectTo(authRoute('users') . '?action=create');
 }
 
@@ -37,7 +43,7 @@ if ($passwordConfirmError !== null) {
 }
 
 try {
-    $createdUser = createUserAccount($username, $password, $isAdmin);
+    $createdUser = createUserAccount($username, $password, $isAdmin, $email !== '' ? $email : null);
 } catch (RuntimeException $runtimeException) {
     setFlash('error', $runtimeException->getMessage());
     redirectTo(authRoute('users') . '?action=create');
