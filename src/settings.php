@@ -6,10 +6,17 @@ function authSettingsFilePath(): string
     return (string) authConfig()['auth_settings_file'];
 }
 
+function defaultAllowSelfRegistration(): bool
+{
+    $registrationConfig = authConfig()['registration'] ?? [];
+
+    return !array_key_exists('allow_self_registration', $registrationConfig) || (bool) $registrationConfig['allow_self_registration'];
+}
+
 function defaultAuthSettings(): array
 {
     return [
-        'allow_self_registration' => true,
+        'allow_self_registration' => defaultAllowSelfRegistration(),
         'require_admin_approval' => !empty(authConfig()['registration']['require_admin_approval']),
     ];
 }
@@ -17,7 +24,9 @@ function defaultAuthSettings(): array
 function normalizeAuthSettings(array $settings): array
 {
     return [
-        'allow_self_registration' => !array_key_exists('allow_self_registration', $settings) || (bool) $settings['allow_self_registration'],
+        'allow_self_registration' => array_key_exists('allow_self_registration', $settings)
+            ? (bool) $settings['allow_self_registration']
+            : defaultAllowSelfRegistration(),
         'require_admin_approval' => array_key_exists('require_admin_approval', $settings)
             ? (bool) $settings['require_admin_approval']
             : !empty(authConfig()['registration']['require_admin_approval']),
