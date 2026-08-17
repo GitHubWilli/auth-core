@@ -13,11 +13,25 @@ function defaultAllowSelfRegistration(): bool
     return !array_key_exists('allow_self_registration', $registrationConfig) || (bool) $registrationConfig['allow_self_registration'];
 }
 
+function defaultAllowNonAdminPasswordChange(): bool
+{
+    $policiesConfig = authConfig()['policies'] ?? [];
+
+    return !array_key_exists('allow_non_admin_password_change', $policiesConfig) || (bool) $policiesConfig['allow_non_admin_password_change'];
+}
+
+function defaultAllowNonAdminAccountDeletion(): bool
+{
+    return !empty(authConfig()['policies']['allow_non_admin_account_deletion']);
+}
+
 function defaultAuthSettings(): array
 {
     return [
         'allow_self_registration' => defaultAllowSelfRegistration(),
         'require_admin_approval' => !empty(authConfig()['registration']['require_admin_approval']),
+        'allow_non_admin_password_change' => defaultAllowNonAdminPasswordChange(),
+        'allow_non_admin_account_deletion' => defaultAllowNonAdminAccountDeletion(),
     ];
 }
 
@@ -30,6 +44,12 @@ function normalizeAuthSettings(array $settings): array
         'require_admin_approval' => array_key_exists('require_admin_approval', $settings)
             ? (bool) $settings['require_admin_approval']
             : !empty(authConfig()['registration']['require_admin_approval']),
+        'allow_non_admin_password_change' => array_key_exists('allow_non_admin_password_change', $settings)
+            ? (bool) $settings['allow_non_admin_password_change']
+            : defaultAllowNonAdminPasswordChange(),
+        'allow_non_admin_account_deletion' => array_key_exists('allow_non_admin_account_deletion', $settings)
+            ? (bool) $settings['allow_non_admin_account_deletion']
+            : defaultAllowNonAdminAccountDeletion(),
     ];
 }
 
@@ -80,4 +100,14 @@ function selfRegistrationAllowed(): bool
 function requireAdminApprovalForRegistration(): bool
 {
     return !empty(readAuthSettings()['require_admin_approval']);
+}
+
+function nonAdminPasswordChangeAllowed(): bool
+{
+    return !empty(readAuthSettings()['allow_non_admin_password_change']);
+}
+
+function nonAdminAccountDeletionAllowed(): bool
+{
+    return !empty(readAuthSettings()['allow_non_admin_account_deletion']);
 }

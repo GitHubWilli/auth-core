@@ -127,12 +127,11 @@ return [
         'require_admin_approval' => false, // Startwert; per Admin-UI zur Laufzeit umschaltbar
     ],
     'policies' => [
-        // Default true (= heutiges Verhalten). Auf false setzen, um Nicht-Admins die jeweilige
-        // Selbstverwaltung zu entziehen; Admins sind davon nie betroffen. Wird zusaetzlich zur
-        // UI (profile.php pro App) auch serverseitig in auth-core/api/change-password.php bzw.
-        // delete-account.php durchgesetzt (requireOwnPasswordChangeAllowed()/requireOwnAccountDeletionAllowed()).
+        // Nur der *Startwert*, bevor ein Admin je etwas in der UI gespeichert hat (siehe unten).
+        // allow_non_admin_password_change: Default true (= erlaubt).
+        // allow_non_admin_account_deletion: Default false (= nicht erlaubt).
         'allow_non_admin_password_change' => true,
-        'allow_non_admin_account_deletion' => true,
+        'allow_non_admin_account_deletion' => false,
     ],
     'smtp' => [
         'host' => 'smtp.example.org',
@@ -144,6 +143,26 @@ return [
     'public_base_url' => 'https://beispiel.dedyn.io', // fuer absolute Links in E-Mails; leer = aus Request abgeleitet
 ];
 ```
+
+## Laufzeit-Einstellungen (`storage/auth/auth-settings.json`, per Admin-UI in `users.php`)
+
+Analog zur Selbstregistrierung sind auch die beiden Policy-Flags oben zur Laufzeit ohne Redeploy
+umschaltbar, nicht nur über die statische Config:
+
+- `readAuthSettings()['allow_non_admin_password_change']` / `nonAdminPasswordChangeAllowed()`
+- `readAuthSettings()['allow_non_admin_account_deletion']` / `nonAdminAccountDeletionAllowed()`
+
+Gespeichert über `writeAuthSettings()` bzw. den bestehenden Admin-Endpunkt
+`api/admin-update-registration.php` (schreibt alle vier Felder gemeinsam:
+`allow_self_registration`, `require_admin_approval`, `allow_non_admin_password_change`,
+`allow_non_admin_account_deletion`). Fehlt ein Feld in der gespeicherten JSON-Datei (z.B. bei
+Apps, die noch mit einer alten Version gespeichert haben), fällt `normalizeAuthSettings()` auf den
+Startwert aus `authConfig()['policies']` zurück (siehe oben). `currentUserCanChangeOwnPassword()`/
+`currentUserCanDeleteOwnAccount()` in `auth.php` lesen ausschliesslich diese Laufzeit-Einstellung
+(nicht mehr direkt `authConfig()`); Admins sind von beiden Flags nie betroffen. Jede einbindende
+App zeigt die drei Haken (Selbstregistrierung, Passwort-Selbstaenderung, Konto-Selbstloeschung)
+gebuendelt im "Optionen"-Tab von `users.php` — Apps ohne `register.php` (keine
+Selbstregistrierungs-Route) lassen den ersten Haken weg, da er dort technisch wirkungslos waere.
 
 ## Design-Regeln
 

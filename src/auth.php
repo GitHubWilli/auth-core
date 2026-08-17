@@ -132,7 +132,7 @@ function currentUserCanChangeOwnPassword(): bool
         return true;
     }
 
-    return (bool) (authConfig()['policies']['allow_non_admin_password_change'] ?? true);
+    return nonAdminPasswordChangeAllowed();
 }
 
 function currentUserCanDeleteOwnAccount(): bool
@@ -141,7 +141,7 @@ function currentUserCanDeleteOwnAccount(): bool
         return true;
     }
 
-    return (bool) (authConfig()['policies']['allow_non_admin_account_deletion'] ?? true);
+    return nonAdminAccountDeletionAllowed();
 }
 
 function requireOwnPasswordChangeAllowed()

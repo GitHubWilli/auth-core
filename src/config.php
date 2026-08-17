@@ -77,7 +77,7 @@ function authDefaultConfig(): array
         ],
         'policies' => [
             'allow_non_admin_password_change' => true,
-            'allow_non_admin_account_deletion' => true,
+            'allow_non_admin_account_deletion' => false,
         ],
         'password_reset' => [
             'token_lifetime' => 2400,
