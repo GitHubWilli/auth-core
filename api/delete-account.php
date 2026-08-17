@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 
-requireAuth();
+requireOwnAccountDeletionAllowed();
 
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
     redirectTo(authRoute('profile'));

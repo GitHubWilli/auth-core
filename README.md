@@ -43,6 +43,8 @@ auth-core/
     users.php               # Nutzerspeicher (@accounts.json), CRUD, Aktivierung/Sperrung
     auth.php                 # Login/Session/requireAuth()/requireAdmin()/...
     settings.php             # Laufzeit-Einstellungen (Selbstregistrierung, Admin-Freischaltung-Pflicht)
+    #                          (Policies fuer Selbst-Passwortaenderung/-Kontoloeschung liegen dagegen in
+    #                          config.php - siehe 'policies' unten, statisch je App per auth-site-config.php)
     persistent-login.php     # "Angemeldet bleiben"-Cookie
     password-reset.php       # Token-Erzeugung/-Pruefung fuer Passwort-vergessen
     mailer.php                # SMTP-Mailversand (PHPMailer, siehe vendor/)
@@ -123,6 +125,14 @@ return [
     ],
     'registration' => [
         'require_admin_approval' => false, // Startwert; per Admin-UI zur Laufzeit umschaltbar
+    ],
+    'policies' => [
+        // Default true (= heutiges Verhalten). Auf false setzen, um Nicht-Admins die jeweilige
+        // Selbstverwaltung zu entziehen; Admins sind davon nie betroffen. Wird zusaetzlich zur
+        // UI (profile.php pro App) auch serverseitig in auth-core/api/change-password.php bzw.
+        // delete-account.php durchgesetzt (requireOwnPasswordChangeAllowed()/requireOwnAccountDeletionAllowed()).
+        'allow_non_admin_password_change' => true,
+        'allow_non_admin_account_deletion' => true,
     ],
     'smtp' => [
         'host' => 'smtp.example.org',

@@ -126,6 +126,48 @@ function requireAdmin()
     redirectTo(authRoute('home'));
 }
 
+function currentUserCanChangeOwnPassword(): bool
+{
+    if (currentUserIsAdmin()) {
+        return true;
+    }
+
+    return (bool) (authConfig()['policies']['allow_non_admin_password_change'] ?? true);
+}
+
+function currentUserCanDeleteOwnAccount(): bool
+{
+    if (currentUserIsAdmin()) {
+        return true;
+    }
+
+    return (bool) (authConfig()['policies']['allow_non_admin_account_deletion'] ?? true);
+}
+
+function requireOwnPasswordChangeAllowed()
+{
+    requireAuth();
+
+    if (currentUserCanChangeOwnPassword()) {
+        return;
+    }
+
+    setFlash('error', 'Nur Administratoren duerfen ihr Passwort selbst aendern.');
+    redirectTo(authRoute('profile'));
+}
+
+function requireOwnAccountDeletionAllowed()
+{
+    requireAuth();
+
+    if (currentUserCanDeleteOwnAccount()) {
+        return;
+    }
+
+    setFlash('error', 'Nur Administratoren duerfen ihr Konto selbst loeschen.');
+    redirectTo(authRoute('profile'));
+}
+
 function requireGuest()
 {
     if (currentUser() !== null) {

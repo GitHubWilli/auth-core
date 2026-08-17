@@ -75,6 +75,10 @@ function authDefaultConfig(): array
         'registration' => [
             'require_admin_approval' => false,
         ],
+        'policies' => [
+            'allow_non_admin_password_change' => true,
+            'allow_non_admin_account_deletion' => true,
+        ],
         'password_reset' => [
             'token_lifetime' => 2400,
         ],
