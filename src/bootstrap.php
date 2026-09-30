@@ -11,6 +11,7 @@ require_once __DIR__ . '/settings.php';
 require_once __DIR__ . '/users.php';
 require_once __DIR__ . '/persistent-login.php';
 require_once __DIR__ . '/auth.php';
+require_once __DIR__ . '/sso.php';
 require_once __DIR__ . '/password-reset.php';
 require_once __DIR__ . '/mailer.php';
 

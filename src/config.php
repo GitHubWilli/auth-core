@@ -98,6 +98,7 @@ function authDefaultConfig(): array
             'users' => 'users.php',
             'forgot_password' => 'forgot-password.php',
             'reset_password' => 'reset-password.php',
+            'sso' => 'sso.php',
             'after_login' => 'index.php',
             'after_register' => 'index.php',
             'after_logout' => 'login.php?logged_out=1',
@@ -114,6 +115,16 @@ function authDefaultConfig(): array
             'api_admin_update_active_status' => 'api/admin-update-active-status.php',
             'api_forgot_password' => 'api/forgot-password.php',
             'api_reset_password' => 'api/reset-password.php',
+            'api_sso' => 'api/sso.php',
+        ],
+        // Anmeldung weiterreichen (SSO per signiertem Einmal-Token, siehe src/sso.php).
+        // audience: Kennung dieser App (vom Aussteller im Token vermerkt); leer = SSO aus.
+        'sso' => [
+            'audience' => '',
+            'secret_file' => $authStorageDir . DIRECTORY_SEPARATOR . 'sso-secret.txt',
+            'apps_file' => $authStorageDir . DIRECTORY_SEPARATOR . 'sso-apps.json',
+            'nonce_file' => $authStorageDir . DIRECTORY_SEPARATOR . 'sso-nonces.json',
+            'token_lifetime' => 60,
         ],
         'html_app_rewrites' => [
             'index.html' => 'index.php',
