@@ -99,6 +99,7 @@ function authDefaultConfig(): array
             'forgot_password' => 'forgot-password.php',
             'reset_password' => 'reset-password.php',
             'sso' => 'sso.php',
+            'brand_logo' => 'brand-logo.php',
             'after_login' => 'index.php',
             'after_register' => 'index.php',
             'after_logout' => 'login.php?logged_out=1',
@@ -116,6 +117,7 @@ function authDefaultConfig(): array
             'api_forgot_password' => 'api/forgot-password.php',
             'api_reset_password' => 'api/reset-password.php',
             'api_sso' => 'api/sso.php',
+            'api_admin_update_logo' => 'api/admin-update-logo.php',
         ],
         // Anmeldung weiterreichen (SSO per signiertem Einmal-Token, siehe src/sso.php).
         // audience: Kennung dieser App (vom Aussteller im Token vermerkt); leer = SSO aus.
