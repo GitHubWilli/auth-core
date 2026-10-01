@@ -78,6 +78,29 @@ function authBrandLogo(): ?array
     ];
 }
 
+/**
+ * Ergaenzt den Kontext der oberen Leiste um das Logo (falls vorhanden). Ist ein Logo hinterlegt,
+ * wird die obere Leiste auch dort angezeigt, wo die App sonst keine hat ($top === null).
+ */
+function authWithBrandLogo(?array $top): ?array
+{
+    $logo = authBrandLogo();
+    if ($logo === null) {
+        return $top;
+    }
+
+    $top = $top ?? [];
+    $top['logo'] = $logo;
+
+    return $top;
+}
+
+/** Wie auth_statusbar_render(), aber mit Logo in der oberen Leiste. */
+function authStatusbarRender(array $bottom, ?array $top = null): string
+{
+    return auth_statusbar_render($bottom, authWithBrandLogo($top));
+}
+
 /** Interner Link-Pfad (kein externes Ziel, kein javascript:) oder ''. */
 function authBrandNormalizeHref(string $href): string
 {
