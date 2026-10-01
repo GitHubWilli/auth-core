@@ -50,7 +50,7 @@ JS;
 
     return '<div class="panel">'
         . '<h2>Logo</h2>'
-        . '<p class="meta">Das Logo steht ganz links in der oberen Leiste. Alle Text-Buttons (z. B. „Zurück zur Startseite“) stehen direkt rechts daneben. '
+        . '<p class="meta">Das Logo steht ganz links in der oberen Leiste. „Zurück zur Startseite“ steht direkt rechts daneben, die Funktionen bleiben rechts. '
         . 'Erlaubt: SVG, PNG, JPG, WebP (höchstens 2 MB). Rasterbilder werden auf 160 px Höhe verkleinert.</p>'
         . $preview
         . '<form action="' . $action . '" method="post" enctype="multipart/form-data">'
