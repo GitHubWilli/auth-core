@@ -19,7 +19,7 @@ if (!isValidCsrfToken($_POST['csrf_token'] ?? null)) {
 
 try {
     if (($_POST['action'] ?? 'save') === 'remove') {
-        authBrandLogoRemove();
+        authBrandReset();
         setFlash('success', 'Das Logo wurde entfernt.');
         redirectTo($target);
     }

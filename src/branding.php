@@ -137,6 +137,16 @@ function authBrandLogoRemove(): void
     }
 }
 
+/** Entfernt das Logo samt Alt-Text/Link (damit ein spaeteres Logo nicht mit alten Werten vorbelegt wird). */
+function authBrandReset(): void
+{
+    authBrandLogoRemove();
+    $meta = authBrandingDir() . DIRECTORY_SEPARATOR . 'branding.json';
+    if (is_file($meta)) {
+        @unlink($meta);
+    }
+}
+
 /**
  * Speichert ein hochgeladenes Logo ($_FILES-Eintrag). Wirft RuntimeException mit
  * verstaendlicher Meldung bei Fehlern; ersetzt ein vorhandenes Logo.

@@ -24,7 +24,7 @@ function authRenderBrandingPanel(): string
         $remove = '<form action="' . $action . '" method="post" style="margin-top:12px;" data-brand-remove>'
             . csrfInput()
             . '<input type="hidden" name="action" value="remove">'
-            . '<button type="submit" class="button button-danger">Logo entfernen</button></form>';
+            . '<div class="dialog-actions"><button type="submit" class="button button-danger">Logo entfernen</button></div></form>';
 
         // Rueckfrage ueber den gemeinsamen Dialog des Design-Systems (confirmDestructive)
         $removeScript = <<<'JS'
