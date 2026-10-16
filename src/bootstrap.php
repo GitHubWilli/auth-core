@@ -36,6 +36,7 @@ function authCoreBootstrap(string $webRoot, array $appConfigOverrides = []): voi
         ini_set('session.use_strict_mode', '1');
         ini_set('session.use_only_cookies', '1');
         ini_set('session.cookie_httponly', '1');
+        ini_set('session.gc_maxlifetime', (string) (8 * 3600));
 
         if (PHP_VERSION_ID >= 70300) {
             session_set_cookie_params([
