@@ -17,6 +17,9 @@ require_once __DIR__ . '/branding-panel.php';
 require_once __DIR__ . '/password-reset.php';
 require_once __DIR__ . '/mailer.php';
 
+/** Sitzungsdauer (Server-Sitzung und Cookie): 24 Stunden. */
+const AUTH_SESSION_LIFETIME = 86400;
+
 /**
  * Von jeder App aus dem eigenen www/auth/bootstrap.php aufzurufen, nachdem
  * dieses Verzeichnis (auth-core/src/bootstrap.php) requiret wurde.
@@ -36,18 +39,19 @@ function authCoreBootstrap(string $webRoot, array $appConfigOverrides = []): voi
         ini_set('session.use_strict_mode', '1');
         ini_set('session.use_only_cookies', '1');
         ini_set('session.cookie_httponly', '1');
+        ini_set('session.gc_maxlifetime', (string) AUTH_SESSION_LIFETIME);
         ini_set('session.gc_maxlifetime', (string) (8 * 3600));
 
         if (PHP_VERSION_ID >= 70300) {
             session_set_cookie_params([
-                'lifetime' => 0,
+                'lifetime' => AUTH_SESSION_LIFETIME,
                 'path' => '/',
                 'secure' => $secure,
                 'httponly' => true,
                 'samesite' => 'Lax',
             ]);
         } else {
-            session_set_cookie_params(0, '/; samesite=Lax', '', $secure, true);
+            session_set_cookie_params(AUTH_SESSION_LIFETIME, '/; samesite=Lax', '', $secure, true);
         }
 
         session_name((string) $config['session_name']);
